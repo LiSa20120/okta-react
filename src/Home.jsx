@@ -5,24 +5,16 @@ import { withOktaAuth } from '@okta/okta-react';
 export default withOktaAuth(class Home extends Component {
   constructor(props) {
     super(props);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
-  async login() {
-    this.props.authService.login('/');
-  }
-
-  async logout() {
-    this.props.authService.logout('/');
   }
 
   render() {
-    if (this.props.authState.isPending) return null;
+    if (this.props.authState.isPending) { 
+      return <div>Loading...</div>;
+    }
 
     const button = this.props.authState.isAuthenticated ?
-      <button onClick={this.logout}>Logout</button> :
-      <button onClick={this.login}>Login</button>;
+      <button onClick={() => {this.props.authService.logout()}}>Logout</button> :
+      <button onClick={() => {this.props.authService.login()}}>Login</button>;
 
     return (
       <div>
